@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="shortcut icon" href="./assets/favicon.ico" type="image/x-icon">
+    <title>2048</title>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1 class="title">2048</h1>
+            <img src="./assets/svg/icons/rules.svg" alt="rules" class="btn_rules">
+            <div class="rules">
+                <div class="rules__main">
+                    <span class="rules__bold">How to play</span><br>
+                    <span class="rules__bold">Desktop</span>: use arrows to move.<br>
+                    <span class="rules__bold">Mobile</span>: use swipes to move.<br>
+                    Tiles with the same images merge into one when they touch.<br>
+                    <span class="rules__bold">First stage</span>: get the Deathly Hallows!<br>
+                    <span class="rules__bold">Second stage</span>: join two Elderberry Wands!
+                </div>
+
+                <div class="rules__icons"></div>
+            </div>
+        </header>
+
+        <main class="main">
+            <div class="game">
+                <div class="game__tools">
+                    <div class="game__tools__score">
+                        <p class="score__title">Score:</p>
+                        <p class="score"></p>
+                    </div>
+                </div>
+
+                <div class="game__field"></div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <div class="footer__github"><a href="https://github.com/WiiJoy" class="link">WiiJoy</a> &copy; 2022</div>
+            <div class="footer__rss"><a href="https://rs.school/js-stage0/" class="link">Rolling Scopes School</a></div>
+        </footer>
+    </div>
+
+    <div class="modal">
+        <div class="modal__status"></div>
+        <div class="modal__input">
+            <label for="playername" class="modal__input__label">Enter your name before start game</label>
+            <input type="text" placeholder="name" class="modal__input__input" id="playername" autocomplete="off">
+        </div>
+        <button class="modal__button">New Game</button>
+        <div class="divider"></div>
+        <div class="modal__records">
+            <div class="modal__records__title">RECORDS</div>
+            <div class="modal__records__header">
+                <div class="records__name">Name</div>
+                <div class="records__score">Score</div>
+            </div>
+            <div class="modal__records__body"></div>
+        </div>
+    </div>
+
+    <div class="continue">
+        <div class="continue__title">Do you want to continue last game?</div>
+        <div class="continue__btns">
+            <button class="modal__button" data-button="continue">Continue Game</button>
+            <button class="modal__button" data-button="new">Finish Game</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
