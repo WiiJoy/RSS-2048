@@ -655,7 +655,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return isWin
     }
 
-    // Обработка глобальныз рекордов
+    // Считывание глобального рекорда
     async function getGlobalRecord() {
         const res = await fetch(`${api}1`, {
             headers: {
@@ -670,6 +670,7 @@ document.addEventListener('DOMContentLoaded', () => {
         renderTop()
     }
 
+    // Перезапись глобального рекорда
     async function updateGlobalRecord(item) {
         const res = await fetch(`${api}1`, {
             method: 'PUT',
