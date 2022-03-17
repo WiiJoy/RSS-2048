@@ -12,7 +12,8 @@ document.addEventListener('DOMContentLoaded', () => {
           rulesIcons = document.querySelector('.rules__icons'),
           field = document.querySelector('.game__field'),
           continueModal = document.querySelector('.continue'),
-          continueBtns = document.querySelector('.continue__btns');
+          continueBtns = document.querySelector('.continue__btns'),
+          loader = document.querySelector('.loader__wrapper');
 
     let gameData = [],
         score = 0,
@@ -31,7 +32,8 @@ document.addEventListener('DOMContentLoaded', () => {
         globalRecord = {
             player: 'Unknown',
             score: 0
-        };
+        },
+        saveProcess = false;
 
     const images = ['2', '4', '8', '16', '32', '64', '128', '256', '512', '1024', '2048', '4096', '8192']
     const api = 'https://6232e3436de3467dbac25de4.mockapi.io/api/v1/results/'
@@ -500,6 +502,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function handleRecords() {
+        loader.classList.add('loader__wrapper_active')
+        saveProcess = !saveProcess
+
         await getGlobalRecord()
 
         if (score > globalRecord.score) {
@@ -522,6 +527,11 @@ document.addEventListener('DOMContentLoaded', () => {
         renderGames()
 
         setLocalStorage('records', records)
+
+        setTimeout(() => {
+            saveProcess = !saveProcess
+            loader.classList.remove('loader__wrapper_active')
+        }, 300)
     }
 
     function renderStatus() {
@@ -657,6 +667,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Считывание глобального рекорда
     async function getGlobalRecord() {
+        loader.classList.add('loader__wrapper_active')
+
         const res = await fetch(`${api}1`, {
             headers: {
                 'content-type': 'application/json'
@@ -668,10 +680,13 @@ document.addEventListener('DOMContentLoaded', () => {
         globalRecord.score = data.score
 
         renderTop()
+
+        if (!saveProcess) setTimeout(() => loader.classList.remove('loader__wrapper_active'), 300)
     }
 
     // Перезапись глобального рекорда
     async function updateGlobalRecord(item) {
+
         const res = await fetch(`${api}1`, {
             method: 'PUT',
             headers: {
