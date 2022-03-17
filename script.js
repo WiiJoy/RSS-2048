@@ -655,6 +655,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return isWin
     }
 
+    // Обработка апи
     async function getGlobalRecord() {
         const res = await fetch(`${api}1`, {
             headers: {
