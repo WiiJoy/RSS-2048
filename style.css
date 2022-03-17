@@ -383,6 +383,10 @@ body {
     overflow-x: hidden;
 }
 
+.global__records__body {
+    margin-top: 10px;
+}
+
 .records__wrapper {
     box-sizing: border-box;
     position: relative;
