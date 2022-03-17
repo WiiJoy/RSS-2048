@@ -29,8 +29,8 @@ document.addEventListener('DOMContentLoaded', () => {
         isOpen = false,
         checkWas2048 = false,
         globalRecord = {
-            topName: 'Unknown',
-            topScore: 0
+            player: 'Unknown',
+            score: 0
         };
 
     const images = ['2', '4', '8', '16', '32', '64', '128', '256', '512', '1024', '2048', '4096', '8192']
@@ -499,7 +499,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     }
 
-    function handleRecords() {
+    async function handleRecords() {
+        await getGlobalRecord()
+        
+        if (score > globalRecord.score) {
+            await updateGlobalRecord({
+                player: playerName || 'Unknown',
+                score: score
+            })
+        } 
+
         if (records[9] && records[9] >= score) return
 
         if (records.length === 10) records.pop()
@@ -540,6 +549,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 recordsTable.append(createItem(item))
             })
         }
+    }
+
+    function renderTop() {
+        topTable.innerHTML = ''
+        topTable.append(createItem(globalRecord))
     }
 
     function createItem(obj) {
@@ -650,14 +664,36 @@ document.addEventListener('DOMContentLoaded', () => {
             })
             const data = await res.json()
 
-            globalRecord.topName = data.player
-            globalRecord.topScore = data.result
+            globalRecord.player = data.player
+            globalRecord.score = data.score
+
+            renderTop()
 
             console.log(globalRecord)
 
         // } catch (error) {
             
         // }
+    }
+
+    async function updateGlobalRecord(item) {
+        const res = await fetch(`${api}1`, {
+            method: 'PUT',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify(item)
+        })
+
+        const data = await res.json()
+
+        globalRecord.player = data.player
+        globalRecord.score = data.score
+
+        renderTop()
+
+        console.log('after put: ', data)
+        
     }
 
     console.log('Вёрстка +10\n - реализован интерфейс игры +5 (есть!)\n - в футере приложения есть ссылка на гитхаб автора приложения, год создания приложения, логотип курса со ссылкой на курс +5 (есть!)\nЛогика игры. Ходы, перемещения фигур, другие действия игрока подчиняются определённым свойственным игре правилам +10\nРеализовано завершение игры при достижении игровой цели +10 (логика максимально приближена к реальности с поправкой на картинки вместо чисел)\nПо окончанию игры выводится её результат, например, количество ходов, время игры, набранные баллы, выигрыш или поражение и т.д +10 (есть!)\nРезультаты последних 10 игр сохраняются в local storage. Есть таблица рекордов, в которой сохраняются результаты предыдущих 10 игр +10 (есть!)\nАнимации или звуки, или настройки игры. Баллы начисляются за любой из перечисленных пунктов +10 (есть возможность установки имени игрока, есть простая анимация перемещения карт - плавное исчезание и плавное появление на новом месте)\nОчень высокое качество оформления приложения и/или дополнительный не предусмотренный в задании функционал, улучшающий качество приложения +10 (добавлена поддержка touch-событий, т.е. игра полноценно играется с телефона)')
