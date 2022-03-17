@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
           input = document.querySelector('.modal__input__input'),
           gameStatus = document.querySelector('.modal__status'),
           recordsTable = document.querySelector('.modal__records__body'),
+          topTable = document.querySelector('.global__records__body'),
           btn = document.querySelector('.modal__button'),
           modal = document.querySelector('.modal'),
           btnRules = document.querySelector('.btn_rules'),
