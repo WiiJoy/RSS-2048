@@ -357,10 +357,16 @@ document.addEventListener('DOMContentLoaded', () => {
 			let nextCell = getNextBottomElement(row, cell);
 			if (nextCell !== -1) {
 				if (gameData[cell][row] === 0) {
+                    if (gameData[nextCell][row] !== 0) {
+                        let transformCell = document.querySelector(`#cell${nextCell}${row}`).firstChild
+                        transformCell.classList.add(`cell_anim_bottom_${cell - nextCell}`)
+                    }
 					gameData[cell][row] = gameData[nextCell][row] ;
 					gameData[nextCell][row] = 0;
 					cell++;
 				} else if (gameData[cell][row] === gameData[nextCell][row]) {
+                    let transformCell = document.querySelector(`#cell${nextCell}${row}`).firstChild
+                    transformCell.classList.add(`cell_anim_bottom_${cell - nextCell}`)
 					gameData[cell][row] *= 2;
 					gameData[nextCell][row] = 0;
                     renderScore(gameData[cell][row])
@@ -383,6 +389,12 @@ document.addEventListener('DOMContentLoaded', () => {
     function makeStep(side) {
 
         let startCondition = '' + gameData;
+        // let oldGameData = prepareGameData(startCondition)
+
+        
+
+        // let condition = startCondition.split(',')
+        // const oldGameData = gameData
 
         for (let i = 0; i < 4; i++) {
 			switch (side) {
@@ -402,25 +414,36 @@ document.addEventListener('DOMContentLoaded', () => {
 		}
 
 		let finalCondition = '' + gameData
+        // let newGameData = prepareGameData(finalCondition)
 
 		if (startCondition !== finalCondition) {
             isStep = true
-            console.log('startCondition: ', startCondition)
-            console.log('finalCondition: ', finalCondition)
-            console.log('gameData: ', gameData)
+            // console.log('startCondition: ', startCondition)
+            // console.log('finalCondition: ', finalCondition)
+            // console.log('game data: ', oldGameData, newGameData)
+            // console.log('gameData: ', gameData)
 
             switch (side) {
                 case 'left':
-                    handleLeftMoveRow(i)
+                    // handleLeftMoveRow(i)
                     break
                 case 'right':
-                    handleRightMoveRow(i)
+                    // handleRightMoveRow(i)
                     break
                 case 'top':
-                    handleTopMoveRow(i);
+                    // handleTopMoveRow(i);
                     break
                 case 'bottom':
-                    handleBottomMoveRow(i);
+                    // let startPos = 0
+                    // let endPos = 3    
+
+                    // for (let row = 3; row >= 0; row--) {
+                    //     for (let cell = 0; cell < 4; cell++) {
+                    //         if 
+                    //     }
+                    // }
+
+
                     break
             }
 
@@ -446,6 +469,18 @@ document.addEventListener('DOMContentLoaded', () => {
 		}
 
     }
+
+    // function prepareGameData(condition) {
+    //     let currCondition = condition.split(',')
+    //     let currGameData = [
+    //         currCondition.slice(0, 4),
+    //         currCondition.slice(4, 8),
+    //         currCondition.slice(8, 12),
+    //         currCondition.slice(12, 16)
+    //     ]
+
+    //     return currGameData
+    // }
 
     function renderScore(value = 0) {
         score += value
