@@ -606,11 +606,17 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         
         if (top50.length < 50) {
-            await postTop50()
+            await postTop50({
+                player: playerName || 'Unknown',
+                score: score
+            })
         } else if (top50.length === 50 && top50[49].score < score) {
             await deleteTop50(top50[49].id)
             top50.pop()
-            await postTop50()
+            await postTop50({
+                player: playerName || 'Unknown',
+                score: score
+            })
         }
 
         if (records[9] && records[9] >= score) return
@@ -814,7 +820,7 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log(top50)
     }
 
-    async function postTop50() {
+    async function postTop50(item) {
         const res = await fetch(`${top50api}`, {
             method: 'POST',
             headers: {
