@@ -219,28 +219,37 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 if (currCell.firstChild && currCell.firstChild.className === `game__cell__item game__cell_${+gameData[i][j]}`) continue
                 if (gameData[i][j] === 0 && !currCell.firstChild && notFirstStep) continue
-
-                currCell.firstChild.style.opacity = 0
-
-                let div = document.createElement('div')
-
-                div.style.opacity = 0
-				
-                setTimeout(() => {
-
-                    if (gameData[i][j] === 0) {
-                        currCell.innerHTML = ''
-                        div.className = `game__cell__item`
-                    } else {
-                        currCell.innerHTML = ''
-                        div.className = `game__cell__item game__cell_${+gameData[i][j]}`
-                    }
-
-                    currCell.append(div)
-
+                if (currCell.firstChild.className === `game__cell__item` && gameData[i][j] !== 0) {
                     currCell.style.opacity = 1
-                    currCell.firstChild.style.opacity = 1
-                }, 300)
+                    let div = document.createElement('div')
+                    currCell.innerHTML = ''
+                    div.className = `game__cell__item game__cell_${+gameData[i][j]}`
+                    currCell.append(div)
+                } else {
+                    currCell.firstChild.style.opacity = 0
+
+                    let div = document.createElement('div')
+
+                    div.style.opacity = 0
+                    
+                    setTimeout(() => {
+
+                        if (gameData[i][j] === 0) {
+                            currCell.innerHTML = ''
+                            div.className = `game__cell__item`
+                        } else {
+                            currCell.innerHTML = ''
+                            div.className = `game__cell__item game__cell_${+gameData[i][j]}`
+                        }
+
+                        currCell.append(div)
+
+                        currCell.style.opacity = 1
+                        currCell.firstChild.style.opacity = 1
+                    }, 300)
+                }
+
+                
 			}
 		}
         notFirstStep = true
