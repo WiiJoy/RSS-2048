@@ -596,13 +596,22 @@ document.addEventListener('DOMContentLoaded', () => {
         saveProcess = !saveProcess
 
         await getGlobalRecord()
+        await getTop50()
 
         if (score > globalRecord.score) {
             await updateGlobalRecord({
                 player: playerName || 'Unknown',
                 score: score
             })
-        } 
+        }
+        
+        if (top50.length < 50) {
+            await postTop50()
+        } else if (top50.length === 50 && top50[49].score < score) {
+            await deleteTop50(top50[49].id)
+            top50.pop()
+            await postTop50()
+        }
 
         if (records[9] && records[9] >= score) return
 
@@ -799,9 +808,32 @@ document.addEventListener('DOMContentLoaded', () => {
                 'content-type': 'application/json'
             }
         })
-        data = await res.json()
+        const data = await res.json()
         top50 = data.sort((a,b) => b.score - a.score)
 
         console.log(top50)
+    }
+
+    async function postTop50() {
+        const res = await fetch(`${top50api}`, {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify(item)
+        })
+
+        const data = await res.json()
+        top50.push(data)
+        top50 = top50.sort((a, b) => b.score - a.score)
+    }
+
+    async function deleteTop50(id) {
+        await fetch(`${top50api}${id}`, {
+            method: 'DELETE',
+            headers: {
+                'content-type': 'application/json'
+            }
+        })
     }
 })
