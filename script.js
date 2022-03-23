@@ -405,23 +405,44 @@ document.addEventListener('DOMContentLoaded', () => {
 
 		if (startCondition !== finalCondition) {
             isStep = true
-			handleGameProcess()
-            
-            setTimeout(() => {
-                getRandomCell()
-                
+            console.log('startCondition: ', startCondition)
+            console.log('finalCondition: ', finalCondition)
+            console.log('gameData: ', gameData)
+
+            switch (side) {
+                case 'left':
+                    handleLeftMoveRow(i)
+                    break
+                case 'right':
+                    handleRightMoveRow(i)
+                    break
+                case 'top':
+                    handleTopMoveRow(i);
+                    break
+                case 'bottom':
+                    handleBottomMoveRow(i);
+                    break
+            }
+
+			setTimeout(() => {
                 handleGameProcess()
-                setLocalStorage('gameData', {
-                    'player': playerName,
-                    'data': gameData,
-                    'score': score,
-                    'checkWas2048': checkWas2048
-                })
+            
+                setTimeout(() => {
+                    getRandomCell()
+                    
+                    handleGameProcess()
+                    setLocalStorage('gameData', {
+                        'player': playerName,
+                        'data': gameData,
+                        'score': score,
+                        'checkWas2048': checkWas2048
+                    })
 
-                checkStatus()
+                    checkStatus()
 
-                isStep = false
-            }, 150)
+                    isStep = false
+                }, 150)
+            }, 300)
 		}
 
     }
