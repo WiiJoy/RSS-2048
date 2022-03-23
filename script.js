@@ -322,10 +322,18 @@ document.addEventListener('DOMContentLoaded', () => {
 			let nextCell = getNextTopElement(row, cell);
 			if (nextCell !== -1) {
 				if (gameData[cell][row] === 0) {
+                    if (gameData[nextCell][row] !== 0) {
+                        console.log('gameData[nextCell][row]: ', gameData[nextCell][row], cell, nextCell, row)
+                        let transformCell = document.querySelector(`#cell${nextCell}${row}`).firstChild
+                        transformCell.classList.add(`cell_anim_top_${nextCell - cell}`)
+                    }
 					gameData[cell][row] = gameData[nextCell][row] ;
 					gameData[nextCell][row] = 0;
 					cell--;
 				} else if (gameData[cell][row] === gameData[nextCell][row]) {
+                    // moveCell('top', nextCell, cell, row)
+                    let transformCell = document.querySelector(`#cell${nextCell}${row}`).firstChild
+                    transformCell.classList.add(`cell_anim_top_${nextCell - cell}`)
 					gameData[cell][row] *= 2;
 					gameData[nextCell][row] = 0;
                     renderScore(gameData[cell][row])
@@ -360,11 +368,15 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (gameData[nextCell][row] !== 0) {
                         let transformCell = document.querySelector(`#cell${nextCell}${row}`).firstChild
                         transformCell.classList.add(`cell_anim_bottom_${cell - nextCell}`)
+                        // moveCell('bottom', nextCell, cell, row)
                     }
 					gameData[cell][row] = gameData[nextCell][row] ;
 					gameData[nextCell][row] = 0;
 					cell++;
 				} else if (gameData[cell][row] === gameData[nextCell][row]) {
+
+                    // moveCell('bottom', nextCell, cell, row)
+
                     let transformCell = document.querySelector(`#cell${nextCell}${row}`).firstChild
                     transformCell.classList.add(`cell_anim_bottom_${cell - nextCell}`)
 					gameData[cell][row] *= 2;
@@ -385,6 +397,11 @@ document.addEventListener('DOMContentLoaded', () => {
 		}
 		return -1;
     }
+
+    // function moveCell(step, nextCell, cell, row) {
+    //     let transformCell = document.querySelector(`#cell${nextCell}${row}`).firstChild
+    //     transformCell.classList.add(`cell_anim_${step}_${cell - nextCell}`)
+    // }
 
     function makeStep(side) {
 
