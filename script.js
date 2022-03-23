@@ -254,10 +254,17 @@ document.addEventListener('DOMContentLoaded', () => {
 			let nextCell = getNextElementInRow(row, cell);
 			if (nextCell !== -1) {
 				if (gameData[row][cell] === 0) {
+                    if (gameData[row][nextCell] !== 0) {
+                        console.log('gameData[row][nextCell]: ', gameData[row][nextCell], cell, nextCell, row)
+                        let transformCell = document.querySelector(`#cell${row}${nextCell}`).firstChild
+                        transformCell.classList.add(`cell_anim_left_${nextCell - cell}`)
+                    }
 					gameData[row][cell] = gameData[row][nextCell];
 					gameData[row][nextCell] = 0;
 					cell--;
 				} else if (gameData[row][cell] === gameData[row][nextCell]) {
+                    let transformCell = document.querySelector(`#cell${row}${nextCell}`).firstChild
+                    transformCell.classList.add(`cell_anim_left_${nextCell - cell}`)
 					gameData[row][cell] *= 2;
 					gameData[row][nextCell] = 0;
                     renderScore(gameData[row][cell])
@@ -288,10 +295,17 @@ document.addEventListener('DOMContentLoaded', () => {
 			let nextCell = getNextRightElementInRow(row, cell);
 			if (nextCell !== -1) {
 				if (gameData[row][cell] === 0) {
+                    if (gameData[row][nextCell] !== 0) {
+                        console.log('gameData[row][nextCell]: ', gameData[row][nextCell], cell, nextCell, row)
+                        let transformCell = document.querySelector(`#cell${row}${nextCell}`).firstChild
+                        transformCell.classList.add(`cell_anim_right_${cell - nextCell}`)
+                    }
 					gameData[row][cell] = gameData[row][nextCell] ;
 					gameData[row][nextCell] = 0;
 					cell++;
 				} else if (gameData[row][cell] === gameData[row][nextCell]) {
+                    let transformCell = document.querySelector(`#cell${row}${nextCell}`).firstChild
+                    transformCell.classList.add(`cell_anim_right_${cell - nextCell}`)
 					gameData[row][cell] *= 2;
 					gameData[row][nextCell] = 0;
                     renderScore(gameData[row][cell])
