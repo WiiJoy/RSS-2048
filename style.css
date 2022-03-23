@@ -246,7 +246,7 @@ body {
 .game__cell__item {
     border-radius: 5px;
     height: 100%;
-    transition: opacity .3s;
+    transition: .3s;
 }
 
 .game__cell_2 {
@@ -312,6 +312,54 @@ body {
 .game__cell_8192 {
     background-color: white;
     background-image: url('./assets/svg/cards/8192.svg');
+}
+
+.cell_anim_bottom_1 {
+    transform: translate(0, 110px);
+}
+
+.cell_anim_bottom_2 {
+    transform: translate(0, 220px);
+}
+
+.cell_anim_bottom_3 {
+    transform: translate(0, 330px);
+}
+
+.cell_anim_top_1 {
+    transform: translate(0, -110px);
+}
+
+.cell_anim_top_2 {
+    transform: translate(0, -220px);
+}
+
+.cell_anim_top_3 {
+    transform: translate(0, -330px);
+}
+
+.cell_anim_right_1 {
+    transform: translate(110px, 0);
+}
+
+.cell_anim_right_2 {
+    transform: translate(220px, 0);
+}
+
+.cell_anim_right_3 {
+    transform: translate(330px, 0);
+}
+
+.cell_anim_left_1 {
+    transform: translate(-110px, 0);
+}
+
+.cell_anim_left_2 {
+    transform: translate(-220px, 0);
+}
+
+.cell_anim_left_3 {
+    transform: translate(-330px, 0);
 }
 
 .footer {
