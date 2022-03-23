@@ -33,12 +33,15 @@ document.addEventListener('DOMContentLoaded', () => {
             player: 'Unknown',
             score: 0
         },
-        saveProcess = false;
+        saveProcess = false,
+        top50 = [];
 
     const images = ['2', '4', '8', '16', '32', '64', '128', '256', '512', '1024', '2048', '4096', '8192']
     const api = 'https://6232e3436de3467dbac25de4.mockapi.io/api/v1/results/'
+    const top50api = 'https://6232e3436de3467dbac25de4.mockapi.io/api/v1/top50/'
     
     getGlobalRecord()
+    getTop50()
     preloadImages()
     getLocalStorage()
     renderGames()
@@ -788,5 +791,17 @@ document.addEventListener('DOMContentLoaded', () => {
         globalRecord.score = data.score
 
         renderTop()        
-    }    
+    }
+    
+    async function getTop50() {
+        const res = await fetch(`${top50api}`, {
+            headers: {
+                'content-type': 'application/json'
+            }
+        })
+        data = await res.json()
+        top50 = data.sort((a,b) => b.score - a.score)
+
+        console.log(top50)
+    }
 })
