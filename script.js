@@ -227,10 +227,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     currCell.append(div)
                 } else {
                     currCell.firstChild.style.opacity = 0
-
+                    currCell.style.opacity = 1
                     let div = document.createElement('div')
 
-                    div.style.opacity = 0
+                    // div.style.opacity = 0
                     
                     setTimeout(() => {
 
@@ -244,9 +244,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
                         currCell.append(div)
 
-                        currCell.style.opacity = 1
+                        
                         currCell.firstChild.style.opacity = 1
-                    }, 300)
+                    }, 150)
                 }
 
                 
