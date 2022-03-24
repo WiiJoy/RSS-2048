@@ -643,6 +643,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function renderTop50() {
+        topSection.querySelector('.top50__body').innerHTML = ''
         top50.forEach((item, k) => {
             topSection.querySelector('.top50__body').append(createItem(item, k))
         })
@@ -803,7 +804,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function postTop50(item) {
-        const res = await fetch(`${top50api}`, {
+        await fetch(`${top50api}`, {
             method: 'POST',
             headers: {
                 'content-type': 'application/json'
@@ -812,7 +813,7 @@ document.addEventListener('DOMContentLoaded', () => {
         })
 
         const data = await res.json()
-        top50.push(data)
+        console.log('push data: ', data)
         top50 = top50.sort((a, b) => b.score - a.score)
     }
 
