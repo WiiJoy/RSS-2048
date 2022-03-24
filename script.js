@@ -225,12 +225,18 @@ document.addEventListener('DOMContentLoaded', () => {
                     currCell.innerHTML = ''
                     div.className = `game__cell__item game__cell_${+gameData[i][j]}`
                     currCell.append(div)
+                } else if (gameData[i][j] !== 0 && currCell.firstChild.className !== `game__cell__item game__cell_${+gameData[i][j] * 2}`) {
+
+                    currCell.style.opacity = 1
+                    let div = document.createElement('div')
+                    currCell.innerHTML = ''
+                    div.className = `game__cell__item game__cell_${+gameData[i][j]}`
+                    currCell.append(div)
+
                 } else {
                     currCell.firstChild.style.opacity = 0
                     currCell.style.opacity = 1
                     let div = document.createElement('div')
-
-                    // div.style.opacity = 0
                     
                     setTimeout(() => {
 
@@ -247,9 +253,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         
                         currCell.firstChild.style.opacity = 1
                     }, 150)
-                }
-
-                
+                }   
 			}
 		}
         notFirstStep = true
@@ -267,7 +271,6 @@ document.addEventListener('DOMContentLoaded', () => {
 			if (nextCell !== -1) {
 				if (gameData[row][cell] === 0) {
                     if (gameData[row][nextCell] !== 0) {
-                        console.log('gameData[row][nextCell]: ', gameData[row][nextCell], cell, nextCell, row)
                         let transformCell = document.querySelector(`#cell${row}${nextCell}`).firstChild
                         transformCell.classList.add(`cell_anim_left_${nextCell - cell}`)
                     }
@@ -308,7 +311,6 @@ document.addEventListener('DOMContentLoaded', () => {
 			if (nextCell !== -1) {
 				if (gameData[row][cell] === 0) {
                     if (gameData[row][nextCell] !== 0) {
-                        console.log('gameData[row][nextCell]: ', gameData[row][nextCell], cell, nextCell, row)
                         let transformCell = document.querySelector(`#cell${row}${nextCell}`).firstChild
                         transformCell.classList.add(`cell_anim_right_${cell - nextCell}`)
                     }
@@ -349,7 +351,6 @@ document.addEventListener('DOMContentLoaded', () => {
 			if (nextCell !== -1) {
 				if (gameData[cell][row] === 0) {
                     if (gameData[nextCell][row] !== 0) {
-                        console.log('gameData[nextCell][row]: ', gameData[nextCell][row], cell, nextCell, row)
                         let transformCell = document.querySelector(`#cell${nextCell}${row}`).firstChild
                         transformCell.classList.add(`cell_anim_top_${nextCell - cell}`)
                     }
@@ -357,7 +358,6 @@ document.addEventListener('DOMContentLoaded', () => {
 					gameData[nextCell][row] = 0;
 					cell--;
 				} else if (gameData[cell][row] === gameData[nextCell][row]) {
-                    // moveCell('top', nextCell, cell, row)
                     let transformCell = document.querySelector(`#cell${nextCell}${row}`).firstChild
                     transformCell.classList.add(`cell_anim_top_${nextCell - cell}`)
 					gameData[cell][row] *= 2;
@@ -394,14 +394,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (gameData[nextCell][row] !== 0) {
                         let transformCell = document.querySelector(`#cell${nextCell}${row}`).firstChild
                         transformCell.classList.add(`cell_anim_bottom_${cell - nextCell}`)
-                        // moveCell('bottom', nextCell, cell, row)
                     }
 					gameData[cell][row] = gameData[nextCell][row] ;
 					gameData[nextCell][row] = 0;
 					cell++;
 				} else if (gameData[cell][row] === gameData[nextCell][row]) {
-
-                    // moveCell('bottom', nextCell, cell, row)
 
                     let transformCell = document.querySelector(`#cell${nextCell}${row}`).firstChild
                     transformCell.classList.add(`cell_anim_bottom_${cell - nextCell}`)
@@ -424,20 +421,9 @@ document.addEventListener('DOMContentLoaded', () => {
 		return -1;
     }
 
-    // function moveCell(step, nextCell, cell, row) {
-    //     let transformCell = document.querySelector(`#cell${nextCell}${row}`).firstChild
-    //     transformCell.classList.add(`cell_anim_${step}_${cell - nextCell}`)
-    // }
-
     function makeStep(side) {
 
         let startCondition = '' + gameData;
-        // let oldGameData = prepareGameData(startCondition)
-
-        
-
-        // let condition = startCondition.split(',')
-        // const oldGameData = gameData
 
         for (let i = 0; i < 4; i++) {
 			switch (side) {
@@ -457,38 +443,9 @@ document.addEventListener('DOMContentLoaded', () => {
 		}
 
 		let finalCondition = '' + gameData
-        // let newGameData = prepareGameData(finalCondition)
 
 		if (startCondition !== finalCondition) {
             isStep = true
-            // console.log('startCondition: ', startCondition)
-            // console.log('finalCondition: ', finalCondition)
-            // console.log('game data: ', oldGameData, newGameData)
-            // console.log('gameData: ', gameData)
-
-            switch (side) {
-                case 'left':
-                    // handleLeftMoveRow(i)
-                    break
-                case 'right':
-                    // handleRightMoveRow(i)
-                    break
-                case 'top':
-                    // handleTopMoveRow(i);
-                    break
-                case 'bottom':
-                    // let startPos = 0
-                    // let endPos = 3    
-
-                    // for (let row = 3; row >= 0; row--) {
-                    //     for (let cell = 0; cell < 4; cell++) {
-                    //         if 
-                    //     }
-                    // }
-
-
-                    break
-            }
 
 			setTimeout(() => {
                 handleGameProcess()
@@ -512,18 +469,6 @@ document.addEventListener('DOMContentLoaded', () => {
 		}
 
     }
-
-    // function prepareGameData(condition) {
-    //     let currCondition = condition.split(',')
-    //     let currGameData = [
-    //         currCondition.slice(0, 4),
-    //         currCondition.slice(4, 8),
-    //         currCondition.slice(8, 12),
-    //         currCondition.slice(12, 16)
-    //     ]
-
-    //     return currGameData
-    // }
 
     function renderScore(value = 0) {
         score += value
@@ -826,7 +771,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const data = await res.json()
         top50 = data.sort((a,b) => b.score - a.score)
 
-        console.log(top50)
     }
 
     async function postTop50(item) {
