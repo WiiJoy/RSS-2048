@@ -594,8 +594,17 @@ body {
     gap: 20px;
 }
 
+.top_title {
+    cursor: pointer;
+    transition: .3s;
+}
+
+.top_title:active {
+    transform: scale(1.05);
+}
+
 .top50 {
-    display: flex;
+    display: none;
     position: fixed;
     left: 0;
     top: 0;
@@ -604,6 +613,7 @@ body {
     z-index: 20;
     justify-content: center;
     align-items: center;
+    transition: .3s;
 }
 
 .top50::before {
@@ -623,6 +633,7 @@ body {
     max-height: 100%;
     padding: 10px;
     overflow: auto;
+    position: relative;
 }
 
 .top50__title {
@@ -636,6 +647,19 @@ body {
     display: flex;
     flex-direction: column;
     gap: 10px;
+}
+
+.top50__close {
+    position: absolute;
+    top: 0;
+    right: 10px;
+    font-size: 36px;
+    cursor: pointer;
+    transition: .3s;
+}
+
+.top50__close:active {
+    transform: scale(1.1);
 }
 
 @media (max-width: 450px) {

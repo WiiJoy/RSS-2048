@@ -185,10 +185,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Открытие топ 50
     topBtn.addEventListener('click', () => {
-        topSection.style.display = 'block'
+        topSection.style.display = 'flex'
 
         setTimeout(() => {
             topSection.style.opacity = 1
+        }, 300)
+    })
+
+    topSection.querySelector('.top50__close').addEventListener('click', () => {
+        topSection.style.opacity = 0
+
+        setTimeout(() => {
+            topSection.style.display = 'none'
         }, 300)
     })
 
