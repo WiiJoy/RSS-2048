@@ -13,7 +13,9 @@ document.addEventListener('DOMContentLoaded', () => {
           field = document.querySelector('.game__field'),
           continueModal = document.querySelector('.continue'),
           continueBtns = document.querySelector('.continue__btns'),
-          loader = document.querySelector('.loader__wrapper');
+          loader = document.querySelector('.loader__wrapper'),
+          topBtn = document.querySelector('.top_title'),
+          topSection = document.querySelector('.top50');
 
     let gameData = [],
         score = 0,
@@ -179,6 +181,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 continueModal.style.display = 'none'
             }, 300)
         }
+    })
+
+    // Открытие топ 50
+    topBtn.addEventListener('click', () => {
+        topSection.style.display = 'block'
+
+        setTimeout(() => {
+            topSection.style.opacity = 1
+        }, 300)
     })
 
     
