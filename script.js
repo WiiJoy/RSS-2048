@@ -13,7 +13,9 @@ document.addEventListener('DOMContentLoaded', () => {
           field = document.querySelector('.game__field'),
           continueModal = document.querySelector('.continue'),
           continueBtns = document.querySelector('.continue__btns'),
-          loader = document.querySelector('.loader__wrapper');
+          loader = document.querySelector('.loader__wrapper'),
+          topBtn = document.querySelector('.top_title'),
+          topSection = document.querySelector('.top50');
 
     let gameData = [],
         score = 0,
@@ -33,12 +35,15 @@ document.addEventListener('DOMContentLoaded', () => {
             player: 'Unknown',
             score: 0
         },
-        saveProcess = false;
+        saveProcess = false,
+        top50 = [];
 
     const images = ['2', '4', '8', '16', '32', '64', '128', '256', '512', '1024', '2048', '4096', '8192']
     const api = 'https://6232e3436de3467dbac25de4.mockapi.io/api/v1/results/'
+    const top50api = 'https://6232e3436de3467dbac25de4.mockapi.io/api/v1/top50/'
     
     getGlobalRecord()
+    getTop50()
     preloadImages()
     getLocalStorage()
     renderGames()
@@ -178,6 +183,23 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     })
 
+    // Открытие топ 50
+    topBtn.addEventListener('click', () => {
+        topSection.style.display = 'flex'
+
+        setTimeout(() => {
+            topSection.style.opacity = 1
+        }, 300)
+    })
+
+    topSection.querySelector('.top50__close').addEventListener('click', () => {
+        topSection.style.opacity = 0
+
+        setTimeout(() => {
+            topSection.style.display = 'none'
+        }, 300)
+    })
+
     
     function startNewGame() {
 
@@ -216,28 +238,40 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 if (currCell.firstChild && currCell.firstChild.className === `game__cell__item game__cell_${+gameData[i][j]}`) continue
                 if (gameData[i][j] === 0 && !currCell.firstChild && notFirstStep) continue
-
-                currCell.firstChild.style.opacity = 0
-
-                let div = document.createElement('div')
-
-                div.style.opacity = 0
-				
-                setTimeout(() => {
-
-                    if (gameData[i][j] === 0) {
-                        currCell.innerHTML = ''
-                        div.className = `game__cell__item`
-                    } else {
-                        currCell.innerHTML = ''
-                        div.className = `game__cell__item game__cell_${+gameData[i][j]}`
-                    }
-
+                if (currCell.firstChild.className === `game__cell__item` && gameData[i][j] !== 0) {
+                    currCell.style.opacity = 1
+                    let div = document.createElement('div')
+                    currCell.innerHTML = ''
+                    div.className = `game__cell__item game__cell_${+gameData[i][j]}`
                     currCell.append(div)
+                } else if (gameData[i][j] !== 0 && currCell.firstChild.className !== `game__cell__item game__cell_${+gameData[i][j] * 2}`) {
 
                     currCell.style.opacity = 1
-                    currCell.firstChild.style.opacity = 1
-                }, 300)
+                    let div = document.createElement('div')
+                    currCell.innerHTML = ''
+                    div.className = `game__cell__item game__cell_${+gameData[i][j]}`
+                    currCell.append(div)
+
+                } else {
+                    currCell.firstChild.style.opacity = 0
+                    currCell.style.opacity = 1
+                    let div = document.createElement('div')
+                    
+                    setTimeout(() => {
+
+                        if (gameData[i][j] === 0) {
+                            currCell.innerHTML = ''
+                            div.className = `game__cell__item`
+                        } else {
+                            currCell.innerHTML = ''
+                            div.className = `game__cell__item game__cell_${+gameData[i][j]}`
+                        }
+
+                        currCell.append(div)
+                        
+                        currCell.firstChild.style.opacity = 1
+                    }, 150)
+                }   
 			}
 		}
         notFirstStep = true
@@ -254,10 +288,16 @@ document.addEventListener('DOMContentLoaded', () => {
 			let nextCell = getNextElementInRow(row, cell);
 			if (nextCell !== -1) {
 				if (gameData[row][cell] === 0) {
+                    if (gameData[row][nextCell] !== 0) {
+                        let transformCell = document.querySelector(`#cell${row}${nextCell}`).firstChild
+                        transformCell.classList.add(`cell_anim_left_${nextCell - cell}`)
+                    }
 					gameData[row][cell] = gameData[row][nextCell];
 					gameData[row][nextCell] = 0;
 					cell--;
 				} else if (gameData[row][cell] === gameData[row][nextCell]) {
+                    let transformCell = document.querySelector(`#cell${row}${nextCell}`).firstChild
+                    transformCell.classList.add(`cell_anim_left_${nextCell - cell}`)
 					gameData[row][cell] *= 2;
 					gameData[row][nextCell] = 0;
                     renderScore(gameData[row][cell])
@@ -288,10 +328,16 @@ document.addEventListener('DOMContentLoaded', () => {
 			let nextCell = getNextRightElementInRow(row, cell);
 			if (nextCell !== -1) {
 				if (gameData[row][cell] === 0) {
+                    if (gameData[row][nextCell] !== 0) {
+                        let transformCell = document.querySelector(`#cell${row}${nextCell}`).firstChild
+                        transformCell.classList.add(`cell_anim_right_${cell - nextCell}`)
+                    }
 					gameData[row][cell] = gameData[row][nextCell] ;
 					gameData[row][nextCell] = 0;
 					cell++;
 				} else if (gameData[row][cell] === gameData[row][nextCell]) {
+                    let transformCell = document.querySelector(`#cell${row}${nextCell}`).firstChild
+                    transformCell.classList.add(`cell_anim_right_${cell - nextCell}`)
 					gameData[row][cell] *= 2;
 					gameData[row][nextCell] = 0;
                     renderScore(gameData[row][cell])
@@ -322,10 +368,16 @@ document.addEventListener('DOMContentLoaded', () => {
 			let nextCell = getNextTopElement(row, cell);
 			if (nextCell !== -1) {
 				if (gameData[cell][row] === 0) {
+                    if (gameData[nextCell][row] !== 0) {
+                        let transformCell = document.querySelector(`#cell${nextCell}${row}`).firstChild
+                        transformCell.classList.add(`cell_anim_top_${nextCell - cell}`)
+                    }
 					gameData[cell][row] = gameData[nextCell][row] ;
 					gameData[nextCell][row] = 0;
 					cell--;
 				} else if (gameData[cell][row] === gameData[nextCell][row]) {
+                    let transformCell = document.querySelector(`#cell${nextCell}${row}`).firstChild
+                    transformCell.classList.add(`cell_anim_top_${nextCell - cell}`)
 					gameData[cell][row] *= 2;
 					gameData[nextCell][row] = 0;
                     renderScore(gameData[cell][row])
@@ -357,10 +409,17 @@ document.addEventListener('DOMContentLoaded', () => {
 			let nextCell = getNextBottomElement(row, cell);
 			if (nextCell !== -1) {
 				if (gameData[cell][row] === 0) {
+                    if (gameData[nextCell][row] !== 0) {
+                        let transformCell = document.querySelector(`#cell${nextCell}${row}`).firstChild
+                        transformCell.classList.add(`cell_anim_bottom_${cell - nextCell}`)
+                    }
 					gameData[cell][row] = gameData[nextCell][row] ;
 					gameData[nextCell][row] = 0;
 					cell++;
 				} else if (gameData[cell][row] === gameData[nextCell][row]) {
+
+                    let transformCell = document.querySelector(`#cell${nextCell}${row}`).firstChild
+                    transformCell.classList.add(`cell_anim_bottom_${cell - nextCell}`)
 					gameData[cell][row] *= 2;
 					gameData[nextCell][row] = 0;
                     renderScore(gameData[cell][row])
@@ -405,25 +464,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
 		if (startCondition !== finalCondition) {
             isStep = true
-			handleGameProcess()
-            
-            setTimeout(() => {
-                getRandomCell()
-                
+
+			setTimeout(() => {
                 handleGameProcess()
-                setLocalStorage('gameData', {
-                    'player': playerName,
-                    'data': gameData,
-                    'score': score,
-                    'checkWas2048': checkWas2048
-                })
+            
+                setTimeout(() => {
+                    getRandomCell()
+                    
+                    handleGameProcess()
+                    setLocalStorage('gameData', {
+                        'player': playerName,
+                        'data': gameData,
+                        'score': score,
+                        'checkWas2048': checkWas2048
+                    })
 
-                checkStatus()
+                    checkStatus()
 
-                isStep = false
-            }, 150)
+                    isStep = false
+                }, 150)
+            }, 300)
 		}
-
     }
 
     function renderScore(value = 0) {
@@ -498,7 +559,6 @@ document.addEventListener('DOMContentLoaded', () => {
         divCellItem.className = `game__cell__item`
         divCell.append(divCellItem)
         field.append(divCell)
-
     }
 
     async function handleRecords() {
@@ -506,13 +566,28 @@ document.addEventListener('DOMContentLoaded', () => {
         saveProcess = !saveProcess
 
         await getGlobalRecord()
+        await getTop50()
 
         if (score > globalRecord.score) {
             await updateGlobalRecord({
                 player: playerName || 'Unknown',
                 score: score
             })
-        } 
+        }
+        
+        if (top50.length < 50) {
+            await postTop50({
+                player: playerName || 'Unknown',
+                score: score
+            })
+        } else if (top50.length === 50 && top50[49].score < score) {
+            await deleteTop50(top50[49].id)
+            top50.pop()
+            await postTop50({
+                player: playerName || 'Unknown',
+                score: score
+            })
+        }
 
         if (records[9] && records[9] >= score) return
 
@@ -525,6 +600,7 @@ document.addEventListener('DOMContentLoaded', () => {
         records = records.sort((a, b) => b.score - a.score)
 
         renderGames()
+        renderTop50()
 
         setLocalStorage('records', records)
 
@@ -566,12 +642,23 @@ document.addEventListener('DOMContentLoaded', () => {
         topTable.append(createItem(globalRecord))
     }
 
-    function createItem(obj) {
+    function renderTop50() {
+        top50.forEach((item, k) => {
+            topSection.querySelector('.top50__body').append(createItem(item, k))
+        })
+    }
+
+    function createItem(obj, num = null) {
         const divWrapper = document.createElement('div')
         const divName = document.createElement('div')
         const divScore = document.createElement('div')
 
-        divName.innerHTML = obj.player
+        if (num || num === 0) {
+            divName.innerHTML = `${num+1}. ${obj.player}`
+        } else {
+            divName.innerHTML = obj.player
+        }
+
         divScore.innerHTML = obj.score
 
         divWrapper.classList.add('records__wrapper')
@@ -701,5 +788,40 @@ document.addEventListener('DOMContentLoaded', () => {
         globalRecord.score = data.score
 
         renderTop()        
-    }    
+    }
+    
+    async function getTop50() {
+        const res = await fetch(`${top50api}`, {
+            headers: {
+                'content-type': 'application/json'
+            }
+        })
+        const data = await res.json()
+        top50 = data.sort((a,b) => b.score - a.score)
+        renderTop50()
+
+    }
+
+    async function postTop50(item) {
+        const res = await fetch(`${top50api}`, {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify(item)
+        })
+
+        const data = await res.json()
+        top50.push(data)
+        top50 = top50.sort((a, b) => b.score - a.score)
+    }
+
+    async function deleteTop50(id) {
+        await fetch(`${top50api}${id}`, {
+            method: 'DELETE',
+            headers: {
+                'content-type': 'application/json'
+            }
+        })
+    }
 })
