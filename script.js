@@ -268,7 +268,6 @@ document.addEventListener('DOMContentLoaded', () => {
                         }
 
                         currCell.append(div)
-
                         
                         currCell.firstChild.style.opacity = 1
                     }, 150)
@@ -486,7 +485,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 }, 150)
             }, 300)
 		}
-
     }
 
     function renderScore(value = 0) {
@@ -561,7 +559,6 @@ document.addEventListener('DOMContentLoaded', () => {
         divCellItem.className = `game__cell__item`
         divCell.append(divCellItem)
         field.append(divCell)
-
     }
 
     async function handleRecords() {
@@ -646,14 +643,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function renderTop50() {
-        console.log('start render: ', top50)
         top50.forEach((item, k) => {
             topSection.querySelector('.top50__body').append(createItem(item, k))
         })
     }
 
     function createItem(obj, num = null) {
-        console.log('create: ', obj, num)
         const divWrapper = document.createElement('div')
         const divName = document.createElement('div')
         const divScore = document.createElement('div')
@@ -664,7 +659,6 @@ document.addEventListener('DOMContentLoaded', () => {
             divName.innerHTML = obj.player
         }
 
-        
         divScore.innerHTML = obj.score
 
         divWrapper.classList.add('records__wrapper')
