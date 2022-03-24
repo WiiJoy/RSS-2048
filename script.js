@@ -643,6 +643,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function renderTop50() {
+
+        topSection.querySelector('.top50__body').innerHTML = ''
+
         top50.forEach((item, k) => {
             topSection.querySelector('.top50__body').append(createItem(item, k))
         })
