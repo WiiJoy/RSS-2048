@@ -595,6 +595,7 @@ document.addEventListener('DOMContentLoaded', () => {
         records = records.sort((a, b) => b.score - a.score)
 
         renderGames()
+        renderTop50()
 
         setLocalStorage('records', records)
 
@@ -636,12 +637,26 @@ document.addEventListener('DOMContentLoaded', () => {
         topTable.append(createItem(globalRecord))
     }
 
-    function createItem(obj) {
+    function renderTop50() {
+        console.log('start render: ', top50)
+        top50.forEach((item, k) => {
+            topSection.querySelector('.top50__body').append(createItem(item, k))
+        })
+    }
+
+    function createItem(obj, num = null) {
+        console.log('create: ', obj, num)
         const divWrapper = document.createElement('div')
         const divName = document.createElement('div')
         const divScore = document.createElement('div')
 
-        divName.innerHTML = obj.player
+        if (num || num === 0) {
+            divName.innerHTML = `${num+1}. ${obj.player}`
+        } else {
+            divName.innerHTML = obj.player
+        }
+
+        
         divScore.innerHTML = obj.score
 
         divWrapper.classList.add('records__wrapper')
@@ -781,6 +796,7 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         const data = await res.json()
         top50 = data.sort((a,b) => b.score - a.score)
+        renderTop50()
 
     }
 
