@@ -483,7 +483,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     isStep = false
                 }, 150)
-            }, 300)
+            }, 150)
 		}
     }
 
